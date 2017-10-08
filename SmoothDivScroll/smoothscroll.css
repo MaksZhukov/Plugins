@@ -1,0 +1,22 @@
+    #scrollleft,
+    #scrollright {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 6%;
+        background: #000;
+    }
+
+    #scrollleft {
+        left: 0;
+    }
+
+    #scrollright {
+        right: 0;
+    }
+
+    #scrollleft img,
+    #scrollright img {
+        position: absolute;
+        top: 45%;
+    }

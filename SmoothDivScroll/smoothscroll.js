@@ -1,17 +1,17 @@
 $(document).ready(function() {
-    table = $('#tablescroll table');
-    tablewrapper = $("#tablescroll");
-    tablewrapper.wrap("<div id='wraptablescroll'></div>");
-    tablewrapper.after("<div id='scrollleft'><img src='left-chevron.svg' alt='left'></div><div id='scrollright'><img src='right-chevron.svg' alt='right'></div>");
-    tablewrapper.css({ 'position': 'relative', 'overflow': 'auto' });
-    $('#wraptablescroll').css('position', 'relative');
-    leftsmooth = $("#wraptablescroll #scrollleft");
-    rightsmooth = $("#wraptablescroll #scrollright");
+    scrollelement = $('#elementscroll *');
+    scrollelementwrapper = $("#elementscroll");
+    scrollelementwrapper.wrap("<div id='wrapelementscroll'></div>");
+    scrollelementwrapper.after("<div id='scrollleft'><img src='left-chevron.svg' alt='left'></div><div id='scrollright'><img src='right-chevron.svg' alt='right'></div>");
+    scrollelementwrapper.css({ 'position': 'relative', 'overflow': 'auto' });
+    $('#wrapelementscroll').css('position', 'relative');
+    leftsmooth = $("#wrapelementscroll #scrollleft");
+    rightsmooth = $("#wrapelementscroll #scrollright");
     tim = 0;
     scrollwidth = 0;
     leftsmooth.hide();
     rightsmooth.hide();
-    tablewrapper.mouseenter(function() {
+    scrollelementwrapper.mouseenter(function() {
         scrollwidth = this.scrollWidth - $(this).width();
         if ($(this).scrollLeft() != 0) {
             leftsmooth.show();
@@ -31,7 +31,7 @@ $(document).ready(function() {
             rightsmooth.hide();
         }
     });
-    tablewrapper.mouseleave(function() {
+    scrollelementwrapper.mouseleave(function() {
         rightsmooth.clearQueue();
         rightsmooth.stop(true);
         leftsmooth.clearQueue();
@@ -39,7 +39,7 @@ $(document).ready(function() {
         leftsmooth.animate({ "opacity": "0" }, 200);
         rightsmooth.animate({ "opacity": "0" }, 200);
     });
-    tablewrapper.scroll(function() {
+    scrollelementwrapper.scroll(function() {
         scrollwidth = this.scrollWidth - $(this).width();
         if ($(this).scrollLeft() == 0) {
             leftsmooth.clearQueue();
@@ -58,46 +58,46 @@ $(document).ready(function() {
 
     });
     leftsmooth.mouseenter(function(event) {
-        if (tablewrapper.scrollLeft() != 0) {
+        if (scrollelementwrapper.scrollLeft() != 0) {
             $(this).clearQueue();
             $(this).stop(true);
             $(this).animate({ 'opacity': '0.5' }, 200);
-            tim = scrollwidth * 2 - (scrollwidth * 2 - tablewrapper.scrollLeft() * 2);
-            tablewrapper.animate({ scrollLeft: 0 }, tim, 'linear');
+            tim = scrollwidth * 2 - (scrollwidth * 2 - scrollelementwrapper.scrollLeft() * 2);
+            scrollelementwrapper.animate({ scrollLeft: 0 }, tim, 'linear');
         } else {
             $(this).hide();
         }
 
     });
     leftsmooth.mouseleave(function(event) {
-        if (tablewrapper.scrollLeft() != 0) {
+        if (scrollelementwrapper.scrollLeft() != 0) {
             $(this).clearQueue();
             $(this).stop(true);
             $(this).animate({ 'opacity': '0' }, 200);
-            tablewrapper.clearQueue();
-            tablewrapper.stop(true);
+            scrollelementwrapper.clearQueue();
+            scrollelementwrapper.stop(true);
         }
     });
     rightsmooth.mouseenter(function(event) {
-        scrollwidth = tablewrapper[0].scrollWidth - tablewrapper.width();
-        if (scrollwidth != tablewrapper.scrollLeft()) {
+        scrollwidth = scrollelementwrapper[0].scrollWidth - scrollelementwrapper.width();
+        if (scrollwidth != scrollelementwrapper.scrollLeft()) {
             $(this).clearQueue();
             $(this).stop(true);
             $(this).animate({ 'opacity': '0.5' }, 200);
-            tim = scrollwidth * 2 - tablewrapper.scrollLeft() * 2;
-            tablewrapper.animate({ scrollLeft: scrollwidth }, tim, 'linear');
+            tim = scrollwidth * 2 - scrollelementwrapper.scrollLeft() * 2;
+            scrollelementwrapper.animate({ scrollLeft: scrollwidth }, tim, 'linear');
         } else {
             $(this).hide();
         }
     });
     rightsmooth.mouseleave(function(event) {
-        scrollwidth = tablewrapper[0].scrollWidth - tablewrapper.width();
-        if (scrollwidth != tablewrapper.scrollLeft()) {
+        scrollwidth = scrollelementwrapper[0].scrollWidth - scrollelementwrapper.width();
+        if (scrollwidth != scrollelementwrapper.scrollLeft()) {
             $(this).clearQueue();
             $(this).stop(true);
             $(this).animate({ 'opacity': '0' }, 200);
-            tablewrapper.clearQueue();
-            tablewrapper.stop(true);
+            scrollelementwrapper.clearQueue();
+            scrollelementwrapper.stop(true);
         }
     });
 
