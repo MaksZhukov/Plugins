@@ -2,21 +2,21 @@ This plugin is designed for beautiful placement in the grid of your images.
 
 
 You need to connect jquery from version 1.7.
-<plaintext>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-</plaintext>
+
+&lt;script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"&gt;&lt;/script&gt;
 
 To make the plugin work well, you need to connect the css library animation.css
-<plaintext>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-</plaintext>
+
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"&gt;
+
+
 To run the plugin you need to connect it to your list in which there are images
-<plaintext>
-<ul>
-        <li><img src="..." alt=""></li>
+
+&lt;ul&gt;
+        &lt;li&gt;&lt;img src="..."&gt;&lt;/li&gt;
         ...
-</ul>
-</plaintext>
+&lt;/ul&gt;
+
 
 jQuery('...').randomImageGrid(option);
 
