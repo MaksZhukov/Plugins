@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+    <ul id="logos">
+        <li><img src="img/bingodotcompr.png" alt=""></li>
+        <li><img src="img/britishgaspr.png" alt=""></li>
+        <li><img src="img/bursonmarstellerpr.png" alt=""></li>
+        <li><img src="img/falmouthuniversitypr.png" alt=""></li>
+        <li><img src="img/hifx.png" alt=""></li>
+        <li><img src="img/O2.png" alt=""></li>
+        <li><img src="img/quidcopr.png" alt=""></li>
+        <li><img src="img/sandisk.png" alt=""></li>
+        <li><img src="img/secretescapespr.png" alt=""></li>
+        <li><img src="img/the-original-factory-shop.png" alt=""></li>
+    </ul>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="random-image-grid-v2.js"></script>
+    <script>
+    jQuery(function() {
+        jQuery('#logos').randomImageGrid({
+            rowsNumber: 2,
+            colsNumber: 4,
+            speed: 2000,
+            //effectDuration: 300
+            //effectAdd: 'random',   ->название анимации Animate css
+            //effectRemove: 'random', ->название анимации Animate css
+            //singleResponsive: true
+        });
+    });
+    </script>
+</body>
+
+</html>
