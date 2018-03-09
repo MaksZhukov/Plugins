@@ -4,23 +4,28 @@ describe("Custom Array Functions", function() {
     it("Method take must return first element form array " + customArrayFunctions.foreach(inputArrayTest, (index, element) => { return element; }), function() {
         expect(customArrayFunctions.take(inputArrayTest, 1)).toEqual([2]);
     });
-    it("Methods customArrayFunctions take first argument instead of an array another type", function() {
+    it("Method take take first argument instead of an array another type", function() {
         expect(customArrayFunctions.take(5, 1)).toBe(false);
+    });
+    it("Method skip take first argument instead of an array another type", function() {
         expect(customArrayFunctions.skip(5, 1)).toBe(false);
+    });
+    it("Method map take first argument instead of an array another type", function() {
         expect(customArrayFunctions.map(5, 1)).toBe(false);
+    });
+    it("Method reduce take first argument instead of an array another type", function() {
         expect(customArrayFunctions.reduce("r", 1, 1)).toBe(false);
+    });
+    it("Method filter take first argument instead of an array another type", function() {
         expect(customArrayFunctions.filter({}, 1)).toBe(false);
+    });
+    it("Method foreach take first argument instead of an array another type", function() {
         expect(customArrayFunctions.foreach(5, 1)).toBe(false);
     });
     it("Method reduce takes an array not only from numbers", function() {
         expect(customArrayFunctions.reduce(inputArrayTestWithChar, (index, element) => { return element; }, 1)).toBe(false);
     });
-    it("Methods customArrayFunctions do not take arguments", function() {
+    it("Method take do not take arguments", function() {
         expect(customArrayFunctions.take()).toBe(false);
-        expect(customArrayFunctions.skip()).toBe(false);
-        expect(customArrayFunctions.map()).toBe(false);
-        expect(customArrayFunctions.reduce()).toBe(false);
-        expect(customArrayFunctions.filter()).toBe(false);
-        expect(customArrayFunctions.foreach()).toBe(false);
     });
 });
