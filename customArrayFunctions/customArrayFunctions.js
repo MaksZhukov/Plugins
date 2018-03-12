@@ -1,5 +1,6 @@
 "use strict";
 var customArrayFunctions = (function() {
+    var arr;
     function isNumber(arr) {
         if (Array.isArray(arr)) {
             for (var i = 0; i < arr.length; i++) {
@@ -10,21 +11,40 @@ var customArrayFunctions = (function() {
             return true;
         }
     }
-
     function take(arr, n) {
-        if (arguments.length !== 0 && Array.isArray(arr)) {
+        if (arguments.length === 1 && this.arr){
+            n = arguments[0];
+            this.arr = this.arr.slice(0, n);
+            return this;
+        }
+        if (arguments.length === 2 && Array.isArray(arr)) {
             return arr.slice(0, n);
         }
     }
 
     function skip(arr, n) {
+        if (arguments.length === 1 && this.arr){
+            n = arguments[0];
+            this.arr = this.arr.slice(n, this.arr.length);
+            return this;
+        }
         if (Array.isArray(arr)) {
             return arr.slice(n, arr.length);
         }
     }
 
     function map(arr, callback) {
-        if (Array.isArray(arr)) {
+        if(arguments.length === 1 && this.arr){
+            var length = this.arr.length,
+                newarr = [],
+                callback = arguments[0];
+            for (var i = 0; i < length; i = i + 1) {
+                newarr.push(callback(i, this.arr[i]));
+            }
+            this.arr=newarr;
+            return this;
+        }
+        if (Array.isArray(arr) && arguments.length === 2) {
             var length = arr.length,
                 newarr = [];
             for (var i = 0; i < length; i = i + 1) {
@@ -35,7 +55,18 @@ var customArrayFunctions = (function() {
     }
 
     function reduce(arr, callback, val) {
-        if (isNumber(arr) && Array.isArray(arr)) {
+        if (arguments.length === 2){
+            var length = this.arr.length,
+                newarr = [],
+                callback = arguments[0],
+                val = arguments[1];
+            for (var i = 0; i < length; i = i + 1) {
+                newarr.push(callback(i, this.arr[i]) - val);
+            }
+            this.arr = newarr;
+            return this;
+        }
+        if (isNumber(arr) && Array.isArray(arr) && arguments.length === 3 ) {
             var length = arr.length,
                 newarr = [];
             for (var i = 0; i < length; i = i + 1) {
@@ -46,7 +77,19 @@ var customArrayFunctions = (function() {
     }
 
     function filter(arr, callback) {
-        if (Array.isArray(arr)) {
+        if(arguments.length === 1){
+            var length = this.arr.length,
+                newarr = [],
+                callback = arguments[0];
+            for (var i = 0; i < length; i = i + 1) {
+                if (callback(i, this.arr[i])) {
+                    newarr.push(this.arr[i]);
+                }
+            }
+            this.arr = newarr;
+            return this;
+        }
+        if (Array.isArray(arr) && arguments.length === 2) {
             var length = arr.length,
                 newarr = [];
             for (var i = 0; i < length; i = i + 1) {
@@ -59,12 +102,19 @@ var customArrayFunctions = (function() {
     }
 
     function foreach(arr, callback) {
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arguments.length === 2) {
             var length = arr.length;
             for (var i = 0; i < length; i = i + 1) {
-                callback(i, arr[i]);
+                arr[i]= callback(i, arr[i]) ? callback(i, arr[i]) : arr[i];
             }
         }
+    }
+    function chain(arr){
+        this.arr = arr;
+        return this;
+    }
+    function value(){
+        return this.arr;
     }
     return {
         take: take,
@@ -72,6 +122,8 @@ var customArrayFunctions = (function() {
         map: map,
         reduce: reduce,
         filter: filter,
-        foreach: foreach
+        foreach: foreach,
+        chain: chain,
+        value: value
     };
 })();
