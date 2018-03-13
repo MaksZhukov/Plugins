@@ -28,9 +28,6 @@ describe("Custom Array Functions", function() {
     it("Method 'reduce' return undefined when first argument is an array not only from numbers", function() {
         expect(customArrayFunctions.reduce(inputArrayTestWithChar, (index, element) => { return element; }, 1)).toBeUndefined();
     });
-    it("Method 'take' return undefined when do not take arguments", function() {
-        expect(customArrayFunctions.take()).toBeUndefined();
-    });
     it("Method 'skip' return last 2 element", function() {
         expect(customArrayFunctions.skip(inputArrayTest, 3)).toEqual([1,6]);
     });

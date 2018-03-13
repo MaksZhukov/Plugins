@@ -1,119 +1,137 @@
 "use strict";
 var customArrayFunctions = (function() {
     var arr;
-    function isNumber(arr) {
-        if (Array.isArray(arr)) {
-            for (var i = 0; i < arr.length; i++) {
-                if (typeof arr[i] != 'number') {
-                    return false;
-                }
+
+    function overload() {
+        var m = [];
+        for (var i = 0; i < arguments.length; i++){
+            if (typeof(arguments[i]) == "function"){
+                m[arguments[i].length] = arguments[i];
             }
-            return true;
         }
+
+        return function() {
+            return m[arguments.length].apply(this, arguments);
+        };
     }
-    function take(arr, n) {
-        if (arguments.length === 1 && this.arr){
-            n = arguments[0];
+
+    function isArrayNumber(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof arr[i] != "number") {
+                return false;
+            }
+        }
+        return true;
+    }
+    var take = overload(
+        function(arr, n) {
+            if (arguments.length === 2 && Array.isArray(arr)) {
+                return arr.slice(0, n);
+            }
+        },
+        function(n) {
             this.arr = this.arr.slice(0, n);
             return this;
         }
-        if (arguments.length === 2 && Array.isArray(arr)) {
-            return arr.slice(0, n);
-        }
-    }
+    );
 
-    function skip(arr, n) {
-        if (arguments.length === 1 && this.arr){
-            n = arguments[0];
+    var skip = overload(
+        function(arr, n) {
+            if (Array.isArray(arr)) {
+                return arr.slice(n, arr.length);
+            }
+        },
+        function(n) {
             this.arr = this.arr.slice(n, this.arr.length);
             return this;
         }
-        if (Array.isArray(arr)) {
-            return arr.slice(n, arr.length);
-        }
-    }
+    );
 
-    function map(arr, callback) {
-        if(arguments.length === 1 && this.arr){
+    var map = overload(
+        function(arr, callback) {
+            if (Array.isArray(arr)) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    newarr.push(callback(i, arr[i]));
+                }
+                return newarr;
+            }
+        },
+        function(callback) {
             var length = this.arr.length,
-                newarr = [],
-                callback = arguments[0];
+                newarr = [];
             for (var i = 0; i < length; i = i + 1) {
                 newarr.push(callback(i, this.arr[i]));
             }
-            this.arr=newarr;
+            this.arr = newarr;
             return this;
         }
-        if (Array.isArray(arr) && arguments.length === 2) {
-            var length = arr.length,
-                newarr = [];
-            for (var i = 0; i < length; i = i + 1) {
-                newarr.push(callback(i, arr[i]));
-            }
-            return newarr;
-        }
-    }
+    );
 
-    function reduce(arr, callback, val) {
-        if (arguments.length === 2){
+    var reduce = overload(
+        function(arr, callback, val) {
+            if (Array.isArray(arr) && isArrayNumber(arr)) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    newarr.push(callback(i, arr[i]) - val);
+                }
+                return newarr;
+            }
+        },
+        function(callback, val) {
             var length = this.arr.length,
-                newarr = [],
-                callback = arguments[0],
-                val = arguments[1];
+                newarr = [];
             for (var i = 0; i < length; i = i + 1) {
                 newarr.push(callback(i, this.arr[i]) - val);
             }
             this.arr = newarr;
             return this;
         }
-        if (isNumber(arr) && Array.isArray(arr) && arguments.length === 3 ) {
-            var length = arr.length,
-                newarr = [];
-            for (var i = 0; i < length; i = i + 1) {
-                newarr.push(callback(i, arr[i]) - val);
-            }
-            return newarr;
-        }
-    }
+    );
 
-    function filter(arr, callback) {
-        if(arguments.length === 1){
-            var length = this.arr.length,
-                newarr = [],
-                callback = arguments[0];
-            for (var i = 0; i < length; i = i + 1) {
-                if (callback(i, this.arr[i])) {
-                    newarr.push(this.arr[i]);
+    var filter = overload(
+        function(arr, callback) {
+            if (Array.isArray(arr)) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    if (callback(i, arr[i])) {
+                        newarr.push(arr[i]);
+                    }
                 }
+                return newarr;
             }
-            this.arr = newarr;
-            return this;
-        }
-        if (Array.isArray(arr) && arguments.length === 2) {
-            var length = arr.length,
-                newarr = [];
-            for (var i = 0; i < length; i = i + 1) {
-                if (callback(i, arr[i])) {
-                    newarr.push(arr[i]);
+        },
+        function(callback) {
+                var length = this.arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    if (callback(i, this.arr[i])) {
+                        newarr.push(this.arr[i]);
+                    }
                 }
+                this.arr = newarr;
+                return this;
             }
-            return newarr;
-        }
-    }
+    );
 
     function foreach(arr, callback) {
         if (Array.isArray(arr) && arguments.length === 2) {
             var length = arr.length;
             for (var i = 0; i < length; i = i + 1) {
-                arr[i]= callback(i, arr[i]) ? callback(i, arr[i]) : arr[i];
+                arr[i] = callback(i, arr[i]) ? callback(i, arr[i]) : arr[i];
             }
         }
     }
-    function chain(arr){
+
+    function chain(arr) {
         this.arr = arr;
         return this;
     }
-    function value(){
+
+    function value() {
         return this.arr;
     }
     return {
