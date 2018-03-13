@@ -1,20 +1,5 @@
 "use strict";
 var customArrayFunctions = (function() {
-    var arr;
-
-    function overload() {
-        var m = [];
-        for (var i = 0; i < arguments.length; i++){
-            if (typeof(arguments[i]) == "function"){
-                m[arguments[i].length] = arguments[i];
-            }
-        }
-
-        return function() {
-            return m[arguments.length].apply(this, arguments);
-        };
-    }
-
     function isArrayNumber(arr) {
         for (var i = 0; i < arr.length; i++) {
             if (typeof arr[i] != "number") {
@@ -23,99 +8,53 @@ var customArrayFunctions = (function() {
         }
         return true;
     }
-    var take = overload(
-        function(arr, n) {
-            if (arguments.length === 2 && Array.isArray(arr)) {
-                return arr.slice(0, n);
-            }
-        },
-        function(n) {
-            this.arr = this.arr.slice(0, n);
-            return this;
-        }
-    );
 
-    var skip = overload(
-        function(arr, n) {
-            if (Array.isArray(arr)) {
-                return arr.slice(n, arr.length);
-            }
-        },
-        function(n) {
-            this.arr = this.arr.slice(n, this.arr.length);
-            return this;
+    function take(arr, n) {
+        if (arguments.length === 2 && Array.isArray(arr)) {
+            return arr.slice(0, n);
         }
-    );
+    }
 
-    var map = overload(
-        function(arr, callback) {
-            if (Array.isArray(arr)) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    newarr.push(callback(i, arr[i]));
-                }
-                return newarr;
-            }
-        },
-        function(callback) {
-            var length = this.arr.length,
+    function skip(arr, n) {
+        if (Array.isArray(arr)) {
+            return arr.slice(n, arr.length);
+        }
+    }
+
+    function map(arr, callback) {
+        if (Array.isArray(arr)) {
+            var length = arr.length,
                 newarr = [];
             for (var i = 0; i < length; i = i + 1) {
-                newarr.push(callback(i, this.arr[i]));
+                newarr.push(callback(i, arr[i]));
             }
-            this.arr = newarr;
-            return this;
+            return newarr;
         }
-    );
+    }
 
-    var reduce = overload(
-        function(arr, callback, val) {
-            if (Array.isArray(arr) && isArrayNumber(arr)) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    newarr.push(callback(i, arr[i]) - val);
-                }
-                return newarr;
-            }
-        },
-        function(callback, val) {
-            var length = this.arr.length,
+    function reduce(arr, callback, val) {
+        if (Array.isArray(arr) && isArrayNumber(arr)) {
+            var length = arr.length,
                 newarr = [];
             for (var i = 0; i < length; i = i + 1) {
-                newarr.push(callback(i, this.arr[i]) - val);
+                newarr.push(callback(i, arr[i]) - val);
             }
-            this.arr = newarr;
-            return this;
+            return newarr;
         }
-    );
+    }
 
-    var filter = overload(
-        function(arr, callback) {
-            if (Array.isArray(arr)) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    if (callback(i, arr[i])) {
-                        newarr.push(arr[i]);
-                    }
+    function filter(arr, callback) {
+        if (Array.isArray(arr)) {
+            var length = arr.length,
+                newarr = [];
+            for (var i = 0; i < length; i = i + 1) {
+                if (callback(i, arr[i])) {
+                    newarr.push(arr[i]);
                 }
-                return newarr;
             }
-        },
-        function(callback) {
-                var length = this.arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    if (callback(i, this.arr[i])) {
-                        newarr.push(this.arr[i]);
-                    }
-                }
-                this.arr = newarr;
-                return this;
-            }
-    );
+            return newarr;
+        }
+    }
 
     function foreach(arr, callback) {
         if (Array.isArray(arr) && arguments.length === 2) {
@@ -127,12 +66,50 @@ var customArrayFunctions = (function() {
     }
 
     function chain(arr) {
-        this.arr = arr;
-        return this;
-    }
+        return {
+            take: function(n) {
+                arr = arr.slice(0, n);
+                return this;
+            },
+            skip: function(n) {
+                arr = arr.slice(n, arr.length);
+                return this;
+            },
+            map: function(callback) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    newarr.push(callback(i, arr[i]));
+                }
+                arr = newarr;
+                return this;
 
-    function value() {
-        return this.arr;
+            },
+            reduce: function(callback, val) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    newarr.push(callback(i, arr[i]) - val);
+                }
+                arr = newarr;
+                return this;
+
+            },
+            filter: function(callback) {
+                var length = arr.length,
+                    newarr = [];
+                for (var i = 0; i < length; i = i + 1) {
+                    if (callback(i, arr[i])) {
+                        newarr.push(arr[i]);
+                    }
+                }
+                arr = newarr;
+                return this;
+            },
+            value: function() {
+                return arr;
+            }
+        };
     }
     return {
         take: take,
@@ -141,7 +118,6 @@ var customArrayFunctions = (function() {
         reduce: reduce,
         filter: filter,
         foreach: foreach,
-        chain: chain,
-        value: value
+        chain: chain
     };
 })();
