@@ -10,7 +10,7 @@ var customArrayFunctions = (function() {
     }
 
     function take(arr, n) {
-        if (arguments.length === 2 && Array.isArray(arr)) {
+        if (Array.isArray(arr)) {
             return arr.slice(0, n);
         }
     }
@@ -57,61 +57,41 @@ var customArrayFunctions = (function() {
     }
 
     function foreach(arr, callback) {
-        if (Array.isArray(arr) && arguments.length === 2) {
+        if (Array.isArray(arr)) {
             var length = arr.length;
             for (var i = 0; i < length; i = i + 1) {
                 arr[i] = callback(i, arr[i]) ? callback(i, arr[i]) : arr[i];
             }
         }
     }
-
     function chain(arr) {
         return {
-            take: function(n) {
-                arr = arr.slice(0, n);
-                return this;
-            },
+            take: function(n){
+              arr = self.take.call(null,arr,n);
+              return this;
+          },
             skip: function(n) {
-                arr = arr.slice(n, arr.length);
+                arr = self.skip.call(null, arr,n);
                 return this;
             },
             map: function(callback) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    newarr.push(callback(i, arr[i]));
-                }
-                arr = newarr;
+                arr = self.map.call(null, arr,callback);
                 return this;
 
             },
             reduce: function(callback, val) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    newarr.push(callback(i, arr[i]) - val);
-                }
-                arr = newarr;
+                 arr = self.reduce.call(null, arr,callback,val);
                 return this;
 
             },
             filter: function(callback) {
-                var length = arr.length,
-                    newarr = [];
-                for (var i = 0; i < length; i = i + 1) {
-                    if (callback(i, arr[i])) {
-                        newarr.push(arr[i]);
-                    }
-                }
-                arr = newarr;
+                arr = self.filter.call(null, arr,callback);
                 return this;
             },
-            value: function() {
-                return arr;
-            }
+            value: () => arr
         };
     }
-    return {
+    var self = {
         take: take,
         skip: skip,
         map: map,
@@ -120,4 +100,6 @@ var customArrayFunctions = (function() {
         foreach: foreach,
         chain: chain
     };
+
+    return self;
 })();
