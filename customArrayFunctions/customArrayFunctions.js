@@ -35,11 +35,13 @@ var customArrayFunctions = (function() {
     function reduce(arr, callback, val) {
         if (Array.isArray(arr) && isArrayNumber(arr)) {
             var length = arr.length,
-                newarr = [];
-            for (var i = 0; i < length; i = i + 1) {
-                newarr.push(callback(i, arr[i]) - val);
+                i=0,
+                value;
+            value = val === "undefined" ? arr[i++] : val; 
+            for (; i < length; i++) {
+                value = callback(value, arr[i]);
             }
-            return newarr;
+            return value;
         }
     }
 
@@ -60,7 +62,7 @@ var customArrayFunctions = (function() {
         if (Array.isArray(arr)) {
             var length = arr.length;
             for (var i = 0; i < length; i = i + 1) {
-                arr[i] = callback(i, arr[i]) ? callback(i, arr[i]) : arr[i];
+                callback(i, arr[i]);
             }
         }
     }
