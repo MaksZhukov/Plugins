@@ -59,4 +59,3 @@ describe("Custom Array Functions chain", function() {
         expect(customArrayFunctions.chain(inputArrayTest).map((index,element)=>{return element + 10;}).take(3).value()).toEqual([9,8,7]);
     });
 });
-console.log(customArrayFunctions.reduce([1,2,3],(p,n)=>{return p+n;},1));
