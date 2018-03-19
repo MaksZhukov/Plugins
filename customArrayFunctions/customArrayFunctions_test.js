@@ -34,8 +34,8 @@ describe("Custom Array Functions", function() {
     it("Method 'map' return all elements and add '_'", function() {
         expect(customArrayFunctions.map(inputArrayTestWithChar, (index,element) => {return element+"_";})).toEqual(["2_","3_","6_","1_","f_"]);
     });
-    it("Method 'reduce' return all elements and reduce their on 3", function() {
-        expect(customArrayFunctions.reduce(inputArrayTest, (index,element)=>{return element;}, 3)).toEqual([-1,3,4,-2,3]);
+    it("Method 'reduce' return sum all elements elements", function() {
+        expect(customArrayFunctions.reduce(inputArrayTest, (prev,next)=>{return prev+next;})).toEqual(26);
     });
     it("Method 'filter' return all elements < 4", function() {
         expect(customArrayFunctions.filter(inputArrayTest, (index,element)=>{return element < 4})).toEqual([2,1]);
@@ -50,16 +50,16 @@ describe("Custom Array Functions chain", function() {
     beforeEach(function() {
         inputArrayTest = [-1,-2,-3,1, 2, 3, 4, 5,6,7,8,9,10];
     });
-    it("Chain skip -> take return array", function() {
+    it("Chain skip -> take return array elements take 5 elements and skip 3", function() {
         expect(customArrayFunctions.chain(inputArrayTest).take(5).skip(3).value()).toEqual([1,2]);
     });
-    it("Chain skip -> take -> filter return array", function() {
+    it("Chain skip -> take -> filter return array elements > 2 take 9 elements and skip 1", function() {
         expect(customArrayFunctions.chain(inputArrayTest).take(9).skip(1).filter((index,element)=>{return element > 2;}).value()).toEqual([3,4,5,6]);
     });
-    it("Chain filter -> take -> reduce return array", function() {
-        expect(customArrayFunctions.chain(inputArrayTest).filter((index,element)=>{return element > 3;}).take(4).reduce((index,element)=>{return element;},4).value()).toEqual([0,1,2,3]);
+    it("Chain filter -> take -> reduce return value sum all choose elements from elements > 3 and take 4", function() {
+        expect(customArrayFunctions.chain(inputArrayTest).filter((index,element)=>{return element > 3;}).take(4).reduce((prev,next)=>{return prev+next;}).value()).toEqual(22);
     });
-    it("Chain map -> reduce -> take return array", function() {
-        expect(customArrayFunctions.chain(inputArrayTest).map((index,element)=>{return element +10;}).reduce((index,element)=>{ return element;},3).take(4).value()).toEqual([6,5,4,8]);
+    it("Chain map -> take return array from 3 elements with add to each 10", function() {
+        expect(customArrayFunctions.chain(inputArrayTest).map((index,element)=>{return element + 10;}).take(3).value()).toEqual([9,8,7]);
     });
 });
