@@ -35,14 +35,10 @@ describe("Custom Array Functions", function() {
         expect(customArrayFunctions.map(inputArrayTestWithChar, (index,element) => {return element+"_";})).toEqual(["2_","3_","6_","1_","f_"]);
     });
     it("Method 'reduce' return sum all elements elements", function() {
-        expect(customArrayFunctions.reduce(inputArrayTest, (prev,next)=>{return prev+next;})).toEqual(26);
+        expect(customArrayFunctions.reduce(inputArrayTest, (prev,next)=>{return prev+next;})).toEqual(22);
     });
     it("Method 'filter' return all elements < 4", function() {
         expect(customArrayFunctions.filter(inputArrayTest, (index,element)=>{return element < 4})).toEqual([2,1]);
-    });
-    it("Method 'foreach' change all elements on 2", function() {
-        customArrayFunctions.foreach(inputArrayTest, (index,element)=>{return 2;});
-        expect(inputArrayTest).toEqual([2,2,2,2,2]);
     });
 });
 describe("Custom Array Functions chain", function() {
@@ -63,3 +59,4 @@ describe("Custom Array Functions chain", function() {
         expect(customArrayFunctions.chain(inputArrayTest).map((index,element)=>{return element + 10;}).take(3).value()).toEqual([9,8,7]);
     });
 });
+console.log(customArrayFunctions.reduce([1,2,3],(p,n)=>{return p+n;},1));
