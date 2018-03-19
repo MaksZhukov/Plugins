@@ -67,29 +67,19 @@ var customArrayFunctions = (function() {
         }
     }
     function chain(arr) {
-        return {
-            take: function(n){
-              arr = self.take.call(null,arr,n);
+        function wrapChain(func) {
+            return function(...args) {
+              arr = func.call(null,arr,...args)
               return this;
-          },
-            skip: function(n) {
-                arr = self.skip.call(null, arr,n);
-                return this;
-            },
-            map: function(callback) {
-                arr = self.map.call(null, arr,callback);
-                return this;
-
-            },
-            reduce: function(callback, val) {
-                 arr = self.reduce.call(null, arr,callback,val);
-                return this;
-
-            },
-            filter: function(callback) {
-                arr = self.filter.call(null, arr,callback);
-                return this;
-            },
+            }
+        }
+        return {
+            take: wrapChain(self.take),
+            skip: wrapChain(self.skip),
+            map: wrapChain(self.map),
+            reduce: wrapChain(self.reduce),
+            foreach: wrapChain(self.foreach),
+            filter: wrapChain(self.filter),
             value: () => arr
         };
     }
