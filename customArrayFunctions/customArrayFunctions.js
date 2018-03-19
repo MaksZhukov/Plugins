@@ -37,7 +37,7 @@ var customArrayFunctions = (function() {
             var length = arr.length,
                 i=0,
                 value;
-            value = val === "undefined" ? arr[i++] : val; 
+            value = val === undefined ? arr[i++] : val; 
             for (; i < length; i++) {
                 value = callback(value, arr[i]);
             }
