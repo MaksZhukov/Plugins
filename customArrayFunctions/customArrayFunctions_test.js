@@ -52,10 +52,20 @@ describe("Custom Array Functions chain", function() {
     it("Chain skip -> take -> filter return array elements > 2 take 9 elements and skip 1", function() {
         expect(customArrayFunctions.chain(inputArrayTest).take(9).skip(1).filter((index,element)=>{return element > 2;}).value()).toEqual([3,4,5,6]);
     });
-    it("Chain filter -> take -> reduce return value sum all choose elements from elements > 3 and take 4", function() {
-        expect(customArrayFunctions.chain(inputArrayTest).filter((index,element)=>{return element > 3;}).take(4).reduce((prev,next)=>{return prev+next;}).value()).toEqual(22);
+    it("Chain filter -> take return elements > 3 and take 4", function() {
+        expect(customArrayFunctions.chain(inputArrayTest).filter((index,element)=>{return element > 3;}).take(4).value()).toEqual([4,5,6,7]);
     });
     it("Chain map -> take return array from 3 elements with add to each 10", function() {
         expect(customArrayFunctions.chain(inputArrayTest).map((index,element)=>{return element + 10;}).take(3).value()).toEqual([9,8,7]);
+    });
+});
+describe("Sum", function() {
+    var inputArrayTest;
+    beforeEach(function() {
+        inputArrayTest = [-1,-2,-3,1, 2, 3, 4, 5,6,7,8,9,10];
+    });
+    it("Function sum return value from cash", function() {
+        let result = sum([inputArrayTest],1,7);
+        expect(result).toEqual(sum([inputArrayTest],1,7));
     });
 });

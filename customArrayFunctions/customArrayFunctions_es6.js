@@ -1,6 +1,9 @@
 "use strict";
-var customArrayFunctions = (function() {
-    function isArrayNumber(arr) {
+class CustomArrayFunctions {
+	constructor(){
+
+	}
+    isArrayNumber(arr) {
         for (var i = 0; i < arr.length; i++) {
             if (typeof arr[i] !== "number") {
                 return false;
@@ -8,20 +11,19 @@ var customArrayFunctions = (function() {
         }
         return true;
     }
-
-    function take(arr, n) {
+    take(arr, n) {
         if (Array.isArray(arr)) {
             return arr.slice(0, n);
         }
     }
 
-    function skip(arr, n) {
+    skip(arr, n) {
         if (Array.isArray(arr)) {
             return arr.slice(n, arr.length);
         }
     }
 
-    function map(arr, callback) {
+    map(arr, callback) {
         if (Array.isArray(arr)) {
             var length = arr.length,
                 newarr = [];
@@ -32,8 +34,8 @@ var customArrayFunctions = (function() {
         }
     }
 
-    function reduce(arr, callback, val) {
-        if (Array.isArray(arr) && isArrayNumber(arr)) {
+    reduce(arr, callback, val) {
+        if (Array.isArray(arr) && this.isArrayNumber(arr)) {
             var length = arr.length,
                 i = 0,
                 value;
@@ -45,7 +47,7 @@ var customArrayFunctions = (function() {
         }
     }
 
-    function filter(arr, callback) {
+    filter(arr, callback) {
         if (Array.isArray(arr)) {
             var length = arr.length,
                 newarr = [];
@@ -58,7 +60,7 @@ var customArrayFunctions = (function() {
         }
     }
 
-    function foreach(arr, callback) {
+    foreach(arr, callback) {
         if (Array.isArray(arr)) {
             var length = arr.length;
             for (var i = 0; i < length; i = i + 1) {
@@ -66,46 +68,55 @@ var customArrayFunctions = (function() {
             }
         }
     }
-
-    function chain(arr) {
-        function wrapChain(func) {
-            return function(...args) {
-                arr = func.call(null, arr, ...args)
-                return this;
-            }
-        }
-        return {
-            take: wrapChain(self.take),
-            skip: wrapChain(self.skip),
-            map: wrapChain(self.map),
-            filter: wrapChain(self.filter),
-            value: () => arr
-        };
+    chain(arr) {
+        return new Chain(arr);
     }
-    var self = {
-        take: take,
-        skip: skip,
-        map: map,
-        reduce: reduce,
-        filter: filter,
-        foreach: foreach,
-        chain: chain
-    };
+}
+class Chain extends CustomArrayFunctions {
+    constructor(arr) {
+    	super();
+        this.arr = arr;
+        return this;
+    }
+    take(n){
+		this.arr = super.take(this.arr,n);
+		return this;
+    }
+    skip(n){
+    	this.arr = super.skip(this.arr,n);
+    	return this;
+    }
+    map(callback){
+    	this.arr = super.map(this.arr,callback);
+    	return this;
+    }
+    filter(callback){
+    	this.arr = super.filter(this.arr,callback);
+    	return this;
+    }
+    value(){
+    	return this.arr;
+    }
+}
 
-    return self;
-})();
-var sum = (function() {
-    let cash = {};
-    return (arr, start, end) => {
+class Sum {
+	constructor (){
+		this.cash = {};
+		return this.sum.bind(this);
+	}
+    sum(arr, start, end) {
         var result = 0,
-            key = arr.toString()+start+end;
-        if (key in cash){
-            return cash[key];
+            key = arr.toString() + start + end;
+        if (key in this.cash) {
+            return this.cash[key];
         }
         for (let i = start - 1; i < end; i++) {
             result += arr[i];
         }
-        cash[key]= result;
+        this.cash[key] = result;
         return result;
-    };
-})();
+    }
+}
+var sum = new Sum();
+var customArrayFunctions = new CustomArrayFunctions();
+
